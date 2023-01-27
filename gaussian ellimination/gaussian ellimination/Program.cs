@@ -3,29 +3,47 @@ using matrixMath;
 using System;
 
 Matrix mat;
-Matrix mat2;
+Matrix coeficiant;
+Matrix coeficiantInv;
+Matrix answers;
 while (true)
 {
-    Console.Write("feed me matrix, here is template\nx,x,x\nx,x,x\nx,x,x\n\n");
-    if (!Matrix.UserInput(out mat)) { break; }
+    bool hasInverse = false;
+    Console.WriteLine("feed me coeficiant matrix A");
+    if (!Matrix.UserInput(out coeficiant)) { break; }
+    Console.WriteLine("feed me result vector B");
+    if (!Matrix.UserInput(out answers)) { break; }
 
-    Console.WriteLine(mat);
+    Console.WriteLine(coeficiant);
+    Console.WriteLine(answers);
 
-    if (mat.Reciprocal(out mat2))
+    if (coeficiant.Reciprocal(out coeficiantInv))
     {
-        Console.WriteLine("this is the recipocal matrix");
-        Console.WriteLine(mat2);
+        hasInverse = true;
+        Console.WriteLine("this is the recipocal coeficient matrix");
+        Console.WriteLine(coeficiantInv);
     }
     else { Console.WriteLine("this dont have a recipocal"); }
 
-    Console.WriteLine("this is the reduced echelon matrix");
 
+    mat = coeficiant.ConcatRow(answers);
+    Console.WriteLine("the parameter matrix is");
+    Console.WriteLine(mat);
+    Console.WriteLine("this is the reduced echelon parameter matrix");
     mat = mat.ReducedEchelon();
+    Console.WriteLine(mat);
+
+    
+    Console.WriteLine("the solution is");
     Fraction[] f = mat.BackSubtitution();
 
-    Console.WriteLine(mat);
-    Console.WriteLine("the solution is");
     if (f.Length == 0) { Console.WriteLine("no solutions"); }
     else { for (int i = 0; i < f.Length; i++) { Console.WriteLine($"X{i} = {f[i]}"); } }
+    
+    if(hasInverse)
+    {
+        Console.WriteLine("\nB * A^-1 =");
+        Console.WriteLine(coeficiantInv * answers);
+    }
     Console.WriteLine("\n\n\n");
 }

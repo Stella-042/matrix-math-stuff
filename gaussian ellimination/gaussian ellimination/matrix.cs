@@ -19,6 +19,81 @@ namespace matrixMath
         {
             return b.ReducedEchelon() == this.ReducedEchelon();
         }
+        public Matrix ConcatRow(Matrix b)
+        {
+            Fraction[][] m = new Fraction[matrixArr.Length][];
+            for (int i = 0; i < m.Length; i++)
+            {
+                m[i] = new Fraction[matrixArr[i].Length + b.matrixArr[i].Length];
+                for (int j = 0; j < Math.Max(matrixArr[i].Length, b.matrixArr[i].Length); j++)
+                {
+                    if(j < matrixArr[i].Length)
+                    {
+                        m[i][j] = matrixArr[i][j];
+                    }
+                    if(j < b.matrixArr[i].Length)
+                    {
+                        m[i][j + matrixArr[i].Length] = b.matrixArr[i][j];
+                    }
+                }
+            }
+            return new Matrix(m);
+        }
+        public Matrix ConcatCol(Matrix b)
+        {
+            Fraction[][] m = new Fraction[matrixArr.Length + b.matrixArr.Length][];
+            for (int i = 0; i < Math.Max(matrixArr.Length, b.matrixArr.Length); i++)
+            {
+                if(i < matrixArr.Length)
+                {
+                    m[i] = matrixArr[i];
+                }
+                if(i < b.matrixArr.Length)
+                {
+                    m[i + matrixArr.Length] = b.matrixArr[i];
+                }
+            }
+            return new Matrix(m);
+        }
+        public Matrix[] SplitRow(int n)
+        {
+            Fraction[][] m1 = new Fraction[matrixArr.Length][];
+            Fraction[][] m2 = new Fraction[matrixArr.Length][];
+            for (int i = 0; i < matrixArr.Length; i++)
+            {
+                m1[i] = new Fraction[n];
+                m2[i] = new Fraction[matrixArr.Length - n];
+                for (int j = 0; j < Math.Max(n, m2.Length); j++)
+                {
+                    if(j < n)
+                    {
+                        m1[i][j] = matrixArr[i][j];
+                    }
+                    if(j < m2[i].Length)
+                    {
+                        m2[i][j] = matrixArr[i][j + matrixArr.Length];
+                    }
+                }
+            }
+            return new Matrix[]{ new Matrix(m1), new Matrix(m2)};
+        }
+        public Matrix[] SplitCol(int n)
+        {
+            Fraction[][] m1 = new Fraction[n][];
+            Fraction[][] m2 = new Fraction[matrixArr.Length - n][];
+            for (int i = 0; i < Math.Max(n, m2.Length); i++)
+            {
+                if(i < n)
+                {
+                    m1[i] = matrixArr[i];
+                }
+                if(i < m2.Length)
+                {
+                    m2[i] = matrixArr[i + matrixArr.Length];
+                }
+            }
+            return new Matrix[]{ new Matrix(m1), new Matrix(m2)};
+        }
 
         public static bool operator !=(Matrix a, Matrix b) => !(a == b);
         public static bool operator == (Matrix a, Matrix b)
@@ -84,18 +159,22 @@ namespace matrixMath
         }
         public static Matrix operator *(Matrix a, Matrix b)
         {
-            if (a.matrixArr.Length != b.matrixArr[0].Length) 
+            if (a.matrixArr[0].Length != b.matrixArr.Length) 
             {
-                return new Matrix(new Fraction[][] { }); 
+                return new Matrix(new Fraction[0][] { }); 
             }
-            Fraction[][] m = new Fraction[a.matrixArr[0].Length][];
+            Fraction[][] m = new Fraction[a.matrixArr.Length][];
 
             for (int i = 0; i < m.Length; i++)
             {
-                m[i] = new Fraction[b.matrixArr.Length];
+                m[i] = new Fraction[b.matrixArr[0].Length];
                 for (int j = 0; j < m[i].Length; j++)
                 {
-                    m[i][j] = a.matrixArr[i][j] * b.matrixArr[j][i];
+                    m[i][j] = new Fraction(0);
+                    for (int n = 0; n < b.matrixArr.Length; n++)
+                    {
+                        m[i][j] += a.matrixArr[i][n] * b.matrixArr[n][j];
+                    }
                 }
             }
 
