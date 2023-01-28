@@ -19,6 +19,13 @@ while (true)
     Console.WriteLine("B =");
     Console.WriteLine(answers);
 
+    Fraction det;
+    if(coeficiant.Determinant(out det))
+    {
+        Console.Write("Det(A) = ");
+        Console.WriteLine(det);
+    }
+
     if (coeficiant.Reciprocal(out coeficiantInv))
     {
         hasInverse = true;

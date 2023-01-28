@@ -83,17 +83,26 @@
         public static bool operator !=(Fraction a, Fraction b) => !(a == b);
         public static Fraction operator +(Fraction a) => a;
         public static Fraction operator -(Fraction a) => new Fraction(-a.num, a.den);
+
         public static Fraction operator +(Fraction a, Fraction b)
             => new Fraction(a.num * b.den + b.num * a.den, a.den * b.den);
         public static Fraction operator -(Fraction a, Fraction b)=> a + (-b);
         public static Fraction operator *(Fraction a, Fraction b)
             => new Fraction(a.num * b.num, a.den * b.den);
         public static Fraction operator /(Fraction a, Fraction b)
-        {
-            return new Fraction(a.num * b.den, a.den * b.num);
-        }
-        public bool Finite() { return den != 0; }
+            => new Fraction(a.num * b.den, a.den * b.num);
 
+        public static Fraction operator +(Fraction a, int b) => a + new Fraction(b);
+        public static Fraction operator -(Fraction a, int b) => a + (-b);
+        public static Fraction operator *(Fraction a, int b) => a * new Fraction(b);
+        public static Fraction operator /(Fraction a, int b) => a / new Fraction(b);
+
+        public static Fraction operator +(int a, Fraction b) => new Fraction(a) + b;
+        public static Fraction operator -(int a, Fraction b) => a + (-b);
+        public static Fraction operator *(int a, Fraction b) => new Fraction(a) * b;
+        public static Fraction operator /(int a, Fraction b) => new Fraction(a) / b;
+
+        public bool Finite() { return den != 0; }
         public override string ToString()
         {
             if(den == 1)

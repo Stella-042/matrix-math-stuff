@@ -98,7 +98,7 @@ namespace matrixMath
         public static bool operator !=(Matrix a, Matrix b) => !(a == b);
         public static bool operator == (Matrix a, Matrix b)
         {
-            if(!(a.Size == b.Size)) { return false; }
+            if(!(a.Size() == b.Size())) { return false; }
             for(int i = 0; i < a.matrixArr.Length; i++)
             {
                 for (int j = 0; j < a.matrixArr[i].Length; j++)
@@ -151,17 +151,45 @@ namespace matrixMath
             output = new Matrix(mArr);
             return true;
         }
+        
+        public bool Determinant(out Fraction f)
+        {
+            f = new Fraction(0);
+            if (matrixArr.Length != matrixArr[0].Length) return false;
+            else if(Size() == (2,2))
+            {
+                f = matrixArr[0][0] * matrixArr[1][1] - matrixArr[1][0] * matrixArr[0][1];
+                return true;
+            }
+            for (int n = 0; n < matrixArr.Length; n++)
+            {
+                Fraction[][] m = new Fraction[matrixArr.Length - 1][];
+                for (int i = 0; i < m.Length; i++)
+                {
+                    m[i] = new Fraction[matrixArr[i].Length - 1];
+                    for (int j = 0; j < m[i].Length; j++)
+                    {
+                        m[i][j] = matrixArr[i + 1][(j < n) ? j : j + 1];
+                    }
+                }
+                Fraction det;
+                new Matrix(m).Determinant(out det);
+                f += matrixArr[0][n] * (((n & 1) == 0) ? det : -det);
+            }
+            return true;
+        }
+
         public static Matrix operator /(Matrix a, Matrix b)
         {
             Matrix m;
-            if(!b.Reciprocal(out m)) return a;
+            if(!b.Reciprocal(out m)) return new Matrix(new Fraction[0][]);
             return a * m;
         }
         public static Matrix operator *(Matrix a, Matrix b)
         {
             if (a.matrixArr[0].Length != b.matrixArr.Length) 
             {
-                return new Matrix(new Fraction[0][] { }); 
+                return new Matrix(new Fraction[0][]); 
             }
             Fraction[][] m = new Fraction[a.matrixArr.Length][];
 
