@@ -13,17 +13,18 @@ while (true)
     if (!Matrix.UserInput(out coeficiant)) { break; }
     Console.WriteLine("feed me result vector B");
     if (!Matrix.UserInput(out answers)) { break; }
-
+    
+    Console.WriteLine("A =");
     Console.WriteLine(coeficiant);
+    Console.WriteLine("B =");
     Console.WriteLine(answers);
 
     if (coeficiant.Reciprocal(out coeficiantInv))
     {
         hasInverse = true;
-        Console.WriteLine("this is the recipocal coeficient matrix");
+        Console.WriteLine("A^-1 =");
         Console.WriteLine(coeficiantInv);
     }
-    else { Console.WriteLine("this dont have a recipocal"); }
 
 
     mat = coeficiant.ConcatRow(answers);
