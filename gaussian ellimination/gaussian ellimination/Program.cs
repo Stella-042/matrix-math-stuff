@@ -1,11 +1,12 @@
 ﻿using PresiceMath;
 using matrixMath;
-using System;
+using ColumnPrint;
 
 Matrix mat;
 Matrix coeficiant;
 Matrix coeficiantInv;
 Matrix answers;
+Matrix variables;
 while (true)
 {
     bool hasInverse = false;
@@ -13,17 +14,21 @@ while (true)
     if (!Matrix.UserInput(out coeficiant)) { break; }
     Console.WriteLine("feed me result vector B");
     if (!Matrix.UserInput(out answers)) { break; }
-    
-    Console.WriteLine("A =");
-    Console.WriteLine(coeficiant);
-    Console.WriteLine("B =");
-    Console.WriteLine(answers);
+
+    Fraction[][] var = new Fraction[answers.matrixArr.Length][];
+    for (int i = 0; i < var.Length; i++) { var[i] = new Fraction[] {new Fraction($"X{i}")}; }
+    variables = new Matrix(var);
+
+    Console.WriteLine("A * X = B");
+    CP.print($"{coeficiant}","*", $"{variables}", " = ", $"{answers}");
+    Console.WriteLine();
 
     Fraction det;
     if(coeficiant.Determinant(out det))
     {
         Console.Write("Det(A) = ");
         Console.WriteLine(det);
+        Console.WriteLine();
     }
 
     if (coeficiant.Reciprocal(out coeficiantInv))
@@ -31,17 +36,20 @@ while (true)
         hasInverse = true;
         Console.WriteLine("A^-1 =");
         Console.WriteLine(coeficiantInv);
+        Console.WriteLine();
     }
 
 
     mat = coeficiant.ConcatRow(answers);
     Console.WriteLine("the parameter matrix is");
     Console.WriteLine(mat);
+    Console.WriteLine();
     Console.WriteLine("this is the reduced echelon parameter matrix");
     mat = mat.ReducedEchelon();
     Console.WriteLine(mat);
+    Console.WriteLine();
 
-    
+
     Console.WriteLine("the solution is");
     Fraction[] f = mat.BackSubtitution();
 
@@ -50,8 +58,8 @@ while (true)
     
     if(hasInverse)
     {
-        Console.WriteLine("\nB * A^-1 =");
-        Console.WriteLine(coeficiantInv * answers);
+        Console.WriteLine("\nA^-1 * B = x");
+        CP.print($"{coeficiantInv}", "*", $"{answers}", " = ", $"{coeficiantInv * answers}");
     }
     Console.WriteLine("\n\n\n");
 }

@@ -462,15 +462,16 @@ namespace matrixMath
             }
 
             StringBuilder sb = new StringBuilder();
+            string front = "| ";
             foreach (Fraction[] row in matrixArr)
             {
-                string front = "| ";
                 foreach (Fraction f in row)
                 {
                     sb.Append($"{front}{new string(' ', maxLen - f.ToString().Length)}{f}");
                     front = ", ";
                 }
-                sb.Append(" |\n");
+                sb.Append(" |");
+                front = "\n| ";
             }
             return sb.ToString();
         }
