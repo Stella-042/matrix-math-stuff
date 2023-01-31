@@ -1,9 +1,12 @@
-﻿namespace ColumnPrint
+﻿using System.Text;
+
+namespace ColumnPrint
 {
     public static class CP
     {
-        public static void print(params string[] s)
+        public static string build(params string[] s)
         {
+            StringBuilder sb = new StringBuilder();
             string[][] noLF = new string[s.Length][];
             int[] cols = new int[s.Length];
             int[] rows = new int[s.Length];
@@ -28,16 +31,17 @@
                     int ir = i - rows[j];
                     if(ir < noLF[j].Length & ir >= 0)
                     {
-                        Console.Write(noLF[j][ir]);
+                        sb.Append(noLF[j][ir]);
                         Console.Write(new string(' ', cols[j] - noLF[j][ir].Length));
                     }
                     else
                     {
-                        Console.Write(new string(' ', cols[j]));
+                        sb.Append(new string(' ', cols[j]));
                     }
                 }
-                Console.Write('\n');
+                if (i < maxRows - 1) { sb.Append('\n'); };
             }
+            return sb.ToString();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace PresiceMath
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace PresiceMath
 {
     public readonly struct Fraction
     {
@@ -119,7 +121,7 @@
             }
             else
             {
-                return $"( {num} )/( {den} )";
+                return $"{num} / {den}";
             }
         }
 

@@ -1,6 +1,9 @@
 ﻿using PresiceMath;
 using matrixMath;
 using ColumnPrint;
+Fraction c = new Fraction(2,3);
+Console.WriteLine(c.ToString());
+Console.WriteLine(c.ToString().Length);
 
 Matrix mat;
 Matrix coeficiant;
@@ -20,7 +23,7 @@ while (true)
     variables = new Matrix(var);
 
     Console.WriteLine("A * X = B");
-    CP.print($"{coeficiant}","*", $"{variables}", " = ", $"{answers}");
+    Console.WriteLine(CP.build($"{coeficiant}","*", $"{variables}", " = ", $"{answers}"));
     Console.WriteLine();
 
     Fraction det;
@@ -36,6 +39,9 @@ while (true)
         hasInverse = true;
         Console.WriteLine("A^-1 =");
         Console.WriteLine(coeficiantInv);
+        Console.WriteLine();
+
+        Console.WriteLine(CP.build($"{coeficiant}", "*", $"{coeficiantInv}", " = ", $"{coeficiant * coeficiantInv}"));
         Console.WriteLine();
     }
 
@@ -59,7 +65,7 @@ while (true)
     if(hasInverse)
     {
         Console.WriteLine("\nA^-1 * B = x");
-        CP.print($"{coeficiantInv}", "*", $"{answers}", " = ", $"{coeficiantInv * answers}");
+        Console.WriteLine(CP.build($"{coeficiantInv}", "*", $"{answers}", " = ", $"{coeficiantInv * answers}"));
     }
     Console.WriteLine("\n\n\n");
 }

@@ -1,5 +1,6 @@
 ﻿using PresiceMath;
 using System.Text;
+using ColumnPrint;
 
 namespace matrixMath
 {
@@ -462,17 +463,19 @@ namespace matrixMath
             }
 
             StringBuilder sb = new StringBuilder();
-            string front = "| ";
             foreach (Fraction[] row in matrixArr)
             {
-                foreach (Fraction f in row)
+                sb.Append("|");
+                string separator = " ";
+                foreach (Fraction F in row)
                 {
-                    sb.Append($"{front}{new string(' ', maxLen - f.ToString().Length)}{f}");
-                    front = ", ";
+                    string f = F.ToString();
+                    sb.Append($"{separator}{new string(' ', maxLen - f.Length)}{f}");
+                    separator = ", ";
                 }
-                sb.Append(" |");
-                front = "\n| ";
+                sb.Append(" |\n");
             }
+            sb.Remove(sb.Length - 1, 1);
             return sb.ToString();
         }
     }
