@@ -54,10 +54,12 @@ while (true)
 
 
     Console.WriteLine("the solution is");
-    Fraction[] f = mat.BackSubtitution();
 
-    if (f.Length == 0) { Console.WriteLine("no solutions"); }
-    else { for (int i = 0; i < f.Length; i++) { Console.WriteLine($"X{i} = {f[i]}"); } }
+    if (!mat.BackSubtitution(out variables)) { Console.WriteLine("no solutions"); }
+    else
+    {
+        Console.WriteLine(CP.build($"{coeficiant}", "*", $"{variables}", " = ", $"{answers}"));
+    }
     
     if(hasInverse)
     {

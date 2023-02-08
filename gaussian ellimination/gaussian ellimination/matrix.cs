@@ -293,21 +293,22 @@ namespace matrixMath
             return result;
         }
 
-        public Fraction[] GauseElimination()
+        public bool GauseElimination(out Matrix mat)
         {
-            return ReducedEchelon().BackSubtitution();
+            return Echelon().BackSubtitution(out mat);
         }
 
         // -------------- //
         //  Elimination  //
 
-        public Fraction[] BackSubtitution()
+        public bool BackSubtitution(out Matrix mat)
         {
+            mat = this;
             int answerLength = matrixArr[0].Length - 1;
-            Fraction[] answers = new Fraction[answerLength];
+            Fraction[][] answers = new Fraction[answerLength][];
             for (int i = 0; i < answers.Length; i++)
             {
-                answers[i] = new Fraction(1, 0);
+                answers[i] = new Fraction[] { new Fraction(1, 0) };
             }
 
             for (int i = Math.Min(matrixArr.Length - 1, answerLength); i >= 0; i--)
@@ -321,28 +322,29 @@ namespace matrixMath
                 {
                     if (matrixArr[i][j] != 0) { nonZero++; firstNonZero = j; }
                 }
-                if (nonZero == 0 & matrixArr[i][matrixArr[i].Length - 1] != 0) { return new Fraction[0]; }
+                if (nonZero == 0 & matrixArr[i][matrixArr[i].Length - 1] != 0) { return false; }
                 else if (nonZero == 1)
                 {
-                    answers[firstNonZero] = rowAnswer;
+                    answers[firstNonZero][0] = rowAnswer;
                 }
                 else if (nonZero > 1)
                 {
                     for (int j = answerLength - 1; j > firstNonZero; j--)
                     {
-                        if (!answers[j].Finite())
+                        if (!answers[j][0].Finite())
                         {
-                            answers[j] = new Fraction($"N{variableN++}");
+                            answers[j][0] = new Fraction($"N{variableN++}");
                         }
                         if (matrixArr[i][j] != 0)
                         {
-                            rowAnswer -= matrixArr[i][j] * answers[j];
+                            rowAnswer -= matrixArr[i][j] * answers[j][0];
                         }
                     }
-                    answers[firstNonZero] = rowAnswer / matrixArr[i][firstNonZero];
+                    answers[firstNonZero][0] = rowAnswer / matrixArr[i][firstNonZero];
                 }
             }
-            return answers;
+            mat = new Matrix(answers);
+            return true;
         }
 
         // -------------- //
