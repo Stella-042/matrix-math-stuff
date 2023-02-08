@@ -402,53 +402,54 @@ namespace matrixMath
             {
                 matrixTrans[i] = copy(matrixArr[i]);
             }
-            GauseRecursive(0, 0, ref matrixTrans);
+
+            int starti = 0;
+            int startj = 0;
+
+            while (starti + 1 < matrixTrans.Length)
+            {
+                bool stepDone = false;
+                int newj = matrixTrans[0].Length;
+                Fraction[] working = copy(matrixTrans[starti]);
+
+                // step 1, finding first row with earliest non zero value and making it first row //
+                for (int j = startj; j < matrixTrans[0].Length & !stepDone; j++)
+                {
+                    for (int i = starti; i < matrixTrans.Length & !stepDone; i++)
+                    {
+                        if (matrixTrans[i][j] != 0)
+                        {
+                            stepDone = true;
+                            newj = j;
+                            matrixTrans[starti] = copy(matrixTrans[i]);
+                            matrixTrans[i] = copy(working);
+                        }
+                    }
+                }
+
+                if (newj == matrixTrans[0].Length) { break; } // if no onz zero found, return
+
+                // step 2, elliminating the other first row candidates //
+                for (int i = starti + 1; i < matrixTrans.Length; i++)
+                {
+                    Fraction f = matrixTrans[i][newj];
+                    if (f != 0)
+                    {
+                        working = copy(matrixTrans[starti]);
+                        f /= working[newj];
+                        matrixTrans[i][newj] = new Fraction(0);
+                        for (int n = newj + 1; n < working.Length; n++)
+                        {
+                            matrixTrans[i][n] -= working[n] * f;
+                        }
+                    }
+                }
+
+                // step 3, repeating till done //
+                starti++;
+                startj = newj + 1;
+            }
             return matrixTrans;
-        }
-
-        private void GauseRecursive(int starti, int startj, ref Fraction[][] matrixTrans)
-        {
-            bool stepDone = false;
-            int newj = matrixTrans[0].Length;
-            Fraction[] working = copy(matrixTrans[starti]);
-
-            // step 1, finding first row with earliest non zero value and making it first row //
-            for (int j = startj; j < matrixTrans[0].Length & !stepDone; j++)
-            {
-                for (int i = starti; i < matrixTrans.Length & !stepDone; i++)
-                {
-                    if (matrixTrans[i][j] != 0)
-                    {
-                        stepDone = true;
-                        newj = j;
-                        matrixTrans[starti] = copy(matrixTrans[i]);
-                        matrixTrans[i] = copy(working);
-                    }
-                }
-            }
-
-            if (newj == matrixTrans[0].Length) { return; } // if no onz zero found, return
-
-            // step 2, elliminating the other first row candidates //
-            for(int i = starti + 1; i < matrixTrans.Length; i++)
-            {
-                Fraction f = matrixTrans[i][newj];
-                if (f != 0)
-                {
-                    working = copy(matrixTrans[starti]);
-                    f /= working[newj];
-                    matrixTrans[i][newj] = new Fraction(0);
-                    for (int n = newj + 1; n < working.Length; n++)
-                    {
-                        matrixTrans[i][n] -= working[n] * f;
-                    }
-                }
-            }
-
-            // step 3, repeating till done //
-            if (starti + 1 == matrixTrans.Length) { return; }
-            GauseRecursive(starti + 1, newj + 1, ref matrixTrans);
-            return;
         }
 
         // -------------- //
