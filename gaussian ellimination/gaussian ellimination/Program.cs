@@ -1,9 +1,6 @@
 ﻿using PresiceMath;
 using matrixMath;
 using ColumnPrint;
-Fraction c = new Fraction(2,3);
-Console.WriteLine(c.ToString());
-Console.WriteLine(c.ToString().Length);
 
 Matrix mat;
 Matrix coeficiant;

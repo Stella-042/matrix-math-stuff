@@ -121,7 +121,7 @@ namespace PresiceMath
             }
             else
             {
-                return $"{num} / {den}";
+                return $"({num}) / ({den})";
             }
         }
 
