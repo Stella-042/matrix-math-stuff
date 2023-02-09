@@ -152,7 +152,7 @@ namespace matrixMath
             output = new Matrix(mArr);
             return true;
         }
-        
+
         public bool Determinant(out Fraction f)
         {
             f = new Fraction(0);
@@ -352,12 +352,12 @@ namespace matrixMath
 
         public Matrix Echelon()
         {
-            return new Matrix(GauseStart());
+            return new Matrix(Gause());
         }
 
         public Matrix ReducedEchelon()
         {
-            Fraction[][] mat = GauseStart();
+            Fraction[][] mat = Gause();
 
             for (int i = 0; i < mat.Length; i++)
             {
@@ -394,7 +394,7 @@ namespace matrixMath
             return new Matrix(mat);
         }
 
-        private Fraction[][] GauseStart()
+        private Fraction[][] Gause()
         {
             Fraction[][] matrixTrans = new Fraction[matrixArr.Length][];
 

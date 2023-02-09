@@ -1,6 +1,7 @@
 ﻿using PresiceMath;
 using matrixMath;
 using ColumnPrint;
+using System.Diagnostics;
 
 Matrix mat;
 Matrix coeficiant;
@@ -26,8 +27,9 @@ while (true)
     Fraction det;
     Console.WriteLine(coeficiant);
     Console.WriteLine();
-    Console.WriteLine(coeficiant.Echelon());
+    //Console.WriteLine(coeficiant.Echelon());
     Console.WriteLine();
+
     if (coeficiant.Determinant(out det))
     {
         Console.Write("Det(A) = ");
@@ -64,7 +66,7 @@ while (true)
     //{
     //    Console.WriteLine(CP.build($"{coeficiant}", "*", $"{variables}", " = ", $"{answers}"));
     //}
-    
+
     //if(hasInverse)
     //{
     //    Console.WriteLine("\nA^-1 * B = x");
